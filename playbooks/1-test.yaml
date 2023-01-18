@@ -1,0 +1,15 @@
+---
+- name: Provisoning Test
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  tasks:
+    - name: gather some facts
+      ansible.builtin.setup:
+      delegate_to: "{{ event.payload.host }}"
+    - name: unleash the facts
+      ansible.builtin.debug:
+        msg: "{{ ansible_fqdn }}:{{ ansible_default_ipv4.address }}"
+      delegate_to: "{{ event.payload.host }}"
+      delegate_facts: true
